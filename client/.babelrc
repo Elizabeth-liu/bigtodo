@@ -4,7 +4,15 @@
   ],
   "plugins": [
     [
-      "graphql-tag"
-    ]
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    ["import", {
+      "libraryName": "antd"
+    }]
   ]
 }

@@ -5,10 +5,12 @@
 
 type Mutation {
   register(password: String!, email: String!, lastName: String!, firstName: String!): User!
+  updateVisions(args: VisionInput!): Vision!
 }
 
 type Query {
   hello: String!
+  visions: Vision!
 }
 
 type User {
@@ -17,4 +19,18 @@ type User {
   lastName: String!
   email: String!
   name: String!
+}
+
+type Vision {
+  id: ID!
+  annualVision: String!
+  monthlyVision: String!
+  weeklyVision: String!
+}
+
+"""New recipe data"""
+input VisionInput {
+  annualVision: String
+  monthlyVision: String
+  weeklyVision: String
 }
