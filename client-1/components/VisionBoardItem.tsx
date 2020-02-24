@@ -17,7 +17,7 @@ const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
     }
   `
 
-  console.log(props)
+  // console.log(props)
   return (
     <div>
       <h1>{props.item}</h1>

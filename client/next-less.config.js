@@ -60,8 +60,6 @@ module.exports = (nextConfig = {}) => {
         return nextConfig.webpack(config, options);
       }
 
-      console.log(config.module.rules)
-
       return config;
     }
   });

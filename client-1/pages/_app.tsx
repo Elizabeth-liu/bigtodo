@@ -6,8 +6,9 @@ import { ApolloProvider } from "@apollo/react-hooks"
 import withApollo from "../hooks/withApollo"
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
 import 'antd/dist/antd.css'
-// import * as abc from "@ant-design/aliyun-theme/index.less";
-// console.log(abc)
+import './normalize.css'
+import './theme.less'
+
 
 
 export interface ITheme {

@@ -17,7 +17,7 @@ const VisionBoard = (props) => {
   // the hook that calls the query.
   const queryResult = useQuery(VISIONS_QUERY)
   const visions = queryResult && queryResult.data && queryResult.data.visions || {}
-  console.log(queryResult)
+  // console.log(queryResult)
   
   return (
     <div>

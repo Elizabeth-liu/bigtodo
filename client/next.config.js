@@ -1,10 +1,39 @@
-// 未引入next-less，内置global css和module css可以正常使用
-// 新版本中，使用next-less等plugin时，built-in-css support就自动失效了。。。
-const withLess = require('@zeit/next-less')
+require('dotenv').config();
+const withLessExcludeAntd = require('./next-less.config.js');
+const withTypescript = require('@zeit/next-typescript');
+const Dotenv = require('dotenv-webpack');
+const withLess = require('@zeit/next-less');
+// const lessToJS = require("less-vars-to-js");
+const fs = require('fs');
+const path = require('path');
+// fix: prevents error when .less files are required by node
+if (typeof require !== 'undefined') {
+  require.extensions['.less'] = file => {};
+}
 
-const withCSS = require('@zeit/next-css');
-
-module.exports = withCSS(withLess({
-  // 设置为true，没法用global；设置为false, 没法用module.......
-  // cssModules: true
-}));
+module.exports = withTypescript(
+  withLessExcludeAntd({
+    webpack(config, options) {
+      config.plugins = config.plugins || [];
+      const { dev } = options;
+      config.plugins = [
+        ...config.plugins,
+        // Read the .env file
+        new Dotenv({
+          path: path.join(__dirname, `${process.env.NODE_ENV}.env`),
+          systemvars: true
+        })
+      ];
+      return config;
+    },
+    cssModules: true,
+    cssLoaderOptions: {
+      importLoaders: 1,
+      localIdentName: '[local]___[hash:base64:5]'
+    },
+    lessLoaderOptions: {
+      javascriptEnabled: true
+      // modifyVars: themeVariables // make your antd custom effective
+    }
+  })
+);
