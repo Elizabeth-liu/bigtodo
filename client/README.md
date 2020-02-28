@@ -1,15 +1,15 @@
-## Installation
+# next-graphql-styled-components-ts-boilerplate
+This is a boilerplate for these technologies:
+- TypeScript
+- Next.js
+- Styled Components
+- GraphQL
+- SSR
 
-```bash
-$ npm install
-```
+### Setup dev environment
+1. Check this repo out.
+2. `yarn install`
+3. `yarn dev`
+4. open http://localhost:3000/
 
-## Running the app
-
-```bash
-# development
-$ npm run dev
-
-# production mode
-$ npm run start:prod
-```
+Happy coding :)

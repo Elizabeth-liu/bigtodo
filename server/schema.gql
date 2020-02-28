@@ -6,11 +6,28 @@
 type Mutation {
   register(password: String!, email: String!, lastName: String!, firstName: String!): User!
   updateVisions(args: VisionInput!): Vision!
+  updateSchedules(args: ScheduleInput!): Schedule!
 }
 
 type Query {
   hello: String!
   visions: Vision!
+  schedule(date: String!): [Schedule!]!
+}
+
+type Schedule {
+  id: ID!
+  name: String!
+  time: Float!
+  date: String!
+}
+
+"""New recipe data"""
+input ScheduleInput {
+  id: Float
+  name: String
+  time: Float
+  date: String
 }
 
 type User {

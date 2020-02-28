@@ -1,34 +1,13 @@
 import React from "react"
 import App from "next/app"
 import Head from "next/head"
-import { ThemeProvider, createGlobalStyle } from "styled-components"
 import { ApolloProvider } from "@apollo/react-hooks"
 import withApollo from "../hooks/withApollo"
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
 import 'antd/dist/antd.css'
 import './normalize.css'
-import './theme.less'
+import './app.less'
 
-
-
-export interface ITheme {
-  niceBlack: string;
-}
-
-export interface IThemeWrapper {
-  theme: ITheme;
-}
-
-export const theme: ITheme = {
-  niceBlack: "#001F3F",
-}
-
-const GlobalStyle = createGlobalStyle<IThemeWrapper>`
-  body {
-    margin: 0 auto;
-    color: ${props => props.theme.niceBlack}; 
-  }
-`
 
 // since "apollo" isn't a native Next.js prop we have to declare it's type.
 interface IProps {
@@ -49,10 +28,7 @@ class MyApp extends App<IProps> {
         </Head>
         {/* adds the apollo provider to provide it's children with the apollo scope. */}
         <ApolloProvider client={apollo}>
-          <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <Component {...pageProps} />
-          </ThemeProvider>
+          <Component {...pageProps} />
         </ApolloProvider>
       </React.Fragment>
     )

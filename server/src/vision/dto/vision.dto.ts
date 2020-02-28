@@ -1,5 +1,5 @@
-import { Vision } from './../vision.entity';
-import { Field, InputType } from "node_modules/type-graphql";
+import { Vision } from '../vision.entity';
+import { Field, InputType } from "type-graphql";
 
 @InputType({ description: "New recipe data" })
 export class VisionInput implements Partial<Vision> {

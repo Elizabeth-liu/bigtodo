@@ -4,12 +4,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { VisionModule } from './vision/vision.module';
+import { ScheduleModule } from './schedule/schedule.module';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
     UsersModule,
     VisionModule,
+    ScheduleModule,
     GraphQLModule.forRoot({
       // typePaths: ['./**/*.graphql'],  报错：UnhandledPromiseRejectionWarning: Error: Unknown type "Query".
       autoSchemaFile: 'schema.gql',

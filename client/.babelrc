@@ -1,40 +1,18 @@
 {
   "presets": [
-    [
-      "next/babel",
-      {
-        "preset-env": {
-          "targets": {
-            "browsers": [">0.03%"]
-          },
-          "useBuiltIns": "usage"
-        }
-      }
-    ],
-    ["@zeit/next-typescript/babel"]
+    "next/babel"
   ],
   "plugins": [
-    ["module-resolver", {
-      "root": ["./src"],
-      "alias": {
-        "@apollo":"./src/apollo",
-        "@utils":"./src/utils",
-        "@graphql":"./src/graphql",
-        "@components": "./src/components/",
-        "@styles": "./src/styles/",
-        "src": "./src/",
-        "dva-utils": "./src/utils/",
-        "dva": "dva-no-router"
-      }
-    }],
     [
-      "import",
+      "styled-components",
       {
-        "libraryName": "antd",
-        "libraryDirectory": "lib",
-        "style": true
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
       }
     ],
-    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+    ["import", {
+      "libraryName": "antd"
+    }]
   ]
 }

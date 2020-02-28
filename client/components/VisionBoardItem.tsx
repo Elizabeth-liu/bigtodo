@@ -1,0 +1,71 @@
+import React, { useState } from "react"
+import { useQuery, useMutation } from "@apollo/react-hooks"
+import { gql } from "apollo-boost"
+import { Card, Col, Input } from 'antd';
+import './VisionBoardItem.css'
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
+const { TextArea } = Input;
+
+type Props = {
+  item: string,
+  value: string,
+  setIsVisions: Function
+}
+
+const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
+  // our query that defines the attributes we want to get.
+  const VISIONS_MUTATION = gql`
+    mutation($args: VisionInput!){
+      updateVisions(args: $args) {
+        annualVision
+        monthlyVision
+        weeklyVision
+      }
+    }
+  `
+
+
+  const [isEdit, setIsEdit] = useState(false);
+  const [value, setValue] = useState(props.value);
+  // console.log((useMutation(VISIONS_MUTATION)[0]))
+  const [ updateVisions ] = useMutation(VISIONS_MUTATION, {
+    refetchQueries: ['visions'],
+    variables: { args: {[props.item]: value} }
+  })
+
+  const onChange = (e) => {
+    setValue(e.target.value)
+  }
+
+  const onClick = () => {
+    if (isEdit) {
+      // ...用[]而不是{}...
+      
+      // console.log(useMutation(VISIONS_MUTATION))
+      updateVisions().then((data:any) => {
+        props.setIsVisions(data.data.updateVisions)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+    }
+    setIsEdit(!isEdit) 
+  }
+
+  // console.log(props)
+  return (
+    <Col span={6}>
+      <Card title={props.item} extra={<a onClick={onClick}>{isEdit ? 'confirm' : 'edit'}</a>} style={{ width: 300 }}>
+        {isEdit ? 
+        <TextArea value={value} onChange={onChange}/>
+        // <Input value={value} onChange={onChange}/>
+          : <p>{props.value}</p>}
+      </Card>
+    </Col>
+  )
+}
+
+export default VisionBoardItem
+
+
+
