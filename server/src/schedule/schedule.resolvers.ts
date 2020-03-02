@@ -19,7 +19,7 @@ export class ScheduleResolver {
   constructor(private readonly ScheduleService: ScheduleService) {}
 
   @Query(() => [Schedule])
-  async schedule(
+  async schedules(
     @Args("date") date: string
   ): Promise<Schedule[]> {
     let schedules = await this.ScheduleService.find(date)

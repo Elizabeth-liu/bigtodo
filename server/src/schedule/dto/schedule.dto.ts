@@ -4,7 +4,7 @@ import { Field, InputType } from "type-graphql";
 @InputType({ description: "New recipe data" })
 export class ScheduleInput implements Partial<Schedule> {
   @Field({ nullable: true })
-  id: number;
+  id: string;
   @Field({ nullable: true })
   name: string;
   @Field({ nullable: true })

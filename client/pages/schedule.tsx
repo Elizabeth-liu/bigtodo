@@ -16,15 +16,16 @@ const Index = () => {
       <Layout>
         <Header>Big Todo</Header>
         <Content>
-          {/* <Row gutter={16}> */}
+          <Row gutter={16}>
           { 
              ['Sunday', 'Monday', 'Tuesday', 'wednesday', 'Thursday', 'Friday', 'Saturday'].map((item, index) => {
               // console.log(moment().weekday(index).format('LL'))
-              const title = item + '     ' + moment().weekday(index).format('LL')
-              return <ScheduleCard key={item} title={title}/>
+              const weekday = item
+              const date = moment().weekday(index).format('LL')
+              return <ScheduleCard key={item} weekday={weekday} date={date}/>
             })
           }
-          {/* </Row> */}
+          </Row>
         </Content>
         <Footer>Lizzy</Footer>
       </Layout>

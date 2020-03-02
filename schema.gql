@@ -24,7 +24,7 @@ type Schedule {
 
 """New recipe data"""
 input ScheduleInput {
-  id: String
+  id: Float
   name: String
   time: Float
   date: String

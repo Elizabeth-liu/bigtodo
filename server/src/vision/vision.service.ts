@@ -13,7 +13,7 @@ export class VisionService {
 
   async update(args: VisionInput): Promise<any> {
     const originalVision = await this.VisionRepository.findOne({
-      id: 1
+      id: "1"
     });
     // console.log('originalVision', originalVision)
     // console.log('args', args)

@@ -19,6 +19,7 @@ class MyApp extends App<IProps> {
   render() {
     // instead of creating a client here, we use the rehydrated apollo client provided by our own withApollo provider. 
     const { Component, pageProps, apollo } = this.props
+    console.log(apollo)
 
     return (
       <React.Fragment>

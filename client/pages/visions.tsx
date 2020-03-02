@@ -28,7 +28,7 @@ const VisionBoard = (props) => {
     <Layout>
       <Header>Big Todo</Header>
       <Content>
-      <Row type="flex" justify="center">
+      <Row justify="center">
       {
         Object.keys(visions).map(item => {
           // 无法写成visionItem={key, value:visions[key]}形式。。

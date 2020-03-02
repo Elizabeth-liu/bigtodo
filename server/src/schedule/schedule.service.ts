@@ -13,6 +13,7 @@ export class ScheduleService {
 
   async find(date: string): Promise<any> {
     const schedules = await this.ScheduleRepository.find({date})
+    console.log(schedules)
     return schedules
   }
 
@@ -22,6 +23,7 @@ export class ScheduleService {
         id: args.id
       });
       const newSchedule = {...originalSchedule, ...args}
+      console.log(newSchedule)
       const result = await this.ScheduleRepository.save(newSchedule);
       return result
     } else { // create a new schedule

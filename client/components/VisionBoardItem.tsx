@@ -12,24 +12,22 @@ type Props = {
   setIsVisions: Function
 }
 
+const VISIONS_MUTATION = gql`
+mutation($args: VisionInput!){
+  updateVisions(args: $args) {
+    annualVision
+    monthlyVision
+    weeklyVision
+  }
+}
+`
 const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
   // our query that defines the attributes we want to get.
-  const VISIONS_MUTATION = gql`
-    mutation($args: VisionInput!){
-      updateVisions(args: $args) {
-        annualVision
-        monthlyVision
-        weeklyVision
-      }
-    }
-  `
-
 
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(props.value);
   // console.log((useMutation(VISIONS_MUTATION)[0]))
   const [ updateVisions ] = useMutation(VISIONS_MUTATION, {
-    refetchQueries: ['visions'],
     variables: { args: {[props.item]: value} }
   })
 
