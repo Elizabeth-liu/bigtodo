@@ -13,13 +13,24 @@ const SCHEDULES_QUERY = gql`
     schedules(date: $date) {
       id 
       name
-      time 
+      time,
+      date
     }
   }
 `
+const SCHEDULES_CREATE = gql`
+  mutation($args: CreateInput!){
+    updateSchedules(args: $args) {
+      id,
+      name, 
+      date,
+      time
+    }
+  }
+  `
 
-const SCHEDULES_MUTATION = gql`
-  mutation($args: ScheduleInput!){
+const SCHEDULES_UPDATE = gql`
+  mutation($args: UpdateInput!){
     updateSchedules(args: $args) {
       id,
       name, 
@@ -45,13 +56,16 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
 
   const [schedules, setSchedules] = useState(schedulesResult)
 
-  const [createSchedules] = useMutation(SCHEDULES_MUTATION, {
+  const [createSchedules] = useMutation(SCHEDULES_CREATE, {
     refetchQueries: () => [{
       query: SCHEDULES_QUERY,
       variables: {date: props.date}
     }],
-    awaitRefetchQueries: true,
-
+    onCompleted: (data) => {
+      const currentSchedule = data.updateSchedules || {}
+      schedules.push(currentSchedule)
+      setSchedules(schedules)
+    },
     variables: {
       args: {
         time: time,
@@ -60,19 +74,17 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
     }}
   })
 
-  const [updateSchedules] = useMutation(SCHEDULES_MUTATION, {
-    // 可以更新cache，但ui始终不更新，感觉是react-apollo hooks跟react生命周期没有做好关联
-    // refetchQueries: () => [{
-    //   query: SCHEDULES_QUERY,
-    //   variables: {date: props.date},
-    //   fetchPolicy: "no-cache"
-    // }],
+  const [updateSchedules] = useMutation(SCHEDULES_UPDATE, {
     variables: {
       args: {
         time,
         name: taskName,
         id
     }},
+    refetchQueries: () => [{
+      query: SCHEDULES_QUERY,
+      variables: {date: props.date}
+    }],
     onCompleted: (data) => {
       const currentSchedule = data.updateSchedules || {}
       const newSchedules = schedules.map((item) => {
@@ -81,17 +93,6 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       })
       setSchedules(newSchedules)
     }
-    // 使用update虽然可以智能更新对应id的schedule，但只更新了cache，无法跟新ui
-    // update: async (cache, {data}) => {
-      // console.log(schedules)
-    //   const existingSchedules = await cache.readQuery({ query: SCHEDULES_QUERY, variables: {date: props.date} });
-    //  此处只能使用existingSchedules['schedules'] ，不能使用existingSchedules.schedules...
-    //   // console.log(existingSchedules['schedules'] )
-    //   const newSchedule = [data.updateSchedules];
-    //   console.log(newSchedule)
-    //   const datas = {schedules: newSchedule}
-    //   cache.writeQuery({query:SCHEDULES_QUERY, variables: {date: props.date}, data: {...datas}});
-    // }
   })
 
   const onClick = () => {
@@ -125,6 +126,12 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
     setVisible(true)
   }
 
+  const onDelete = (item) => {
+    setTaskName(item.name)
+    setTime(item.time)
+    setId(item.id)
+    setVisible(true)
+  }
 
   return (
     <Col span={6}>
@@ -136,7 +143,7 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
                 {item.name}{item.time}
               </span>
               <a onClick={() => onEdit(item)}>edit</a>
-              <a>delete</a>
+              <a onClick={() => onDelete(item)}>delete</a>
             </div>
           })
         }

@@ -11,7 +11,7 @@ import {
 
 import { Schedule } from "./schedule.entity";
 import { ScheduleService } from "./schedule.service";
-import { ScheduleInput } from "./dto/schedule.dto";
+import { CreateInput, UpdateInput } from "./dto/schedule.dto";
 
 
 @Resolver(Schedule)
@@ -27,8 +27,15 @@ export class ScheduleResolver {
   }
 
   @Mutation(() => Schedule)
+  async createSchedules(
+    @Args('args') args: CreateInput
+  ): Promise<Schedule> {
+    return this.ScheduleService.create(args);
+  }
+
+  @Mutation(() => Schedule)
   async updateSchedules(
-    @Args('args') args: ScheduleInput
+    @Args('args') args: UpdateInput
   ): Promise<Schedule> {
     return this.ScheduleService.update(args);
   }

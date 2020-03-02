@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schedule } from './schedule.entity';
-import { ScheduleInput } from './dto/schedule.dto';
+import { CreateInput, UpdateInput } from './dto/schedule.dto';
+import { CheckResultAndHandleErrors } from '../../node_modules/graphql-tools';
 
 @Injectable()
 export class ScheduleService {
@@ -17,20 +18,20 @@ export class ScheduleService {
     return schedules
   }
 
-  async update(args: ScheduleInput): Promise<any> {
-    if (args.id){ // update a schedule
-      const originalSchedule = await this.ScheduleRepository.findOne({
-        id: args.id
-      });
-      const newSchedule = {...originalSchedule, ...args}
-      console.log(newSchedule)
-      const result = await this.ScheduleRepository.save(newSchedule);
-      return result
-    } else { // create a new schedule
-      const schedule = await this.ScheduleRepository.create({
-        ...args
-      }).save()
-      return schedule
-    }
+  async create(args: CreateInput): Promise<any> {
+    const schedule = await this.ScheduleRepository.create({
+      ...args
+    }).save()
+    return schedule
+  }
+
+  async update(args: UpdateInput): Promise<any> {
+    const originalSchedule = await this.ScheduleRepository.findOne({
+      id: args.id
+    });
+    const newSchedule = {...originalSchedule, ...args}
+    console.log(newSchedule)
+    const result = await this.ScheduleRepository.save(newSchedule);
+    return CheckResultAndHandleErrors
   }
 }
