@@ -27,16 +27,23 @@ export class ScheduleResolver {
   }
 
   @Mutation(() => Schedule)
-  async createSchedules(
+  async createSchedule(
     @Args('args') args: CreateInput
   ): Promise<Schedule> {
     return this.ScheduleService.create(args);
   }
 
   @Mutation(() => Schedule)
-  async updateSchedules(
+  async updateSchedule(
     @Args('args') args: UpdateInput
   ): Promise<Schedule> {
     return this.ScheduleService.update(args);
+  }
+
+  @Mutation(() => Schedule)
+  async deleteSchedule(
+    @Args("id") id: string
+  ): Promise<Schedule> {
+    return this.ScheduleService.delete(id);
   }
 }

@@ -2,9 +2,9 @@ export interface ScheduleInterface {
 
   id?: number;
 
-  name?: string;
+  taskName?: string;
 
-  time?: number;
+  plannedTime?: number;
 
   date?: string;
 }

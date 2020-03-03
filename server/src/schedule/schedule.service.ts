@@ -14,13 +14,12 @@ export class ScheduleService {
 
   async find(date: string): Promise<any> {
     const schedules = await this.ScheduleRepository.find({date})
-    console.log(schedules)
     return schedules
   }
 
   async create(args: CreateInput): Promise<any> {
     const schedule = await this.ScheduleRepository.create({
-      ...args
+      ...args,
     }).save()
     return schedule
   }
@@ -32,6 +31,11 @@ export class ScheduleService {
     const newSchedule = {...originalSchedule, ...args}
     console.log(newSchedule)
     const result = await this.ScheduleRepository.save(newSchedule);
-    return CheckResultAndHandleErrors
+    return result
+  }
+
+  async delete(id: string): Promise<any> {
+    await this.ScheduleRepository.delete({ id });
+    return {id}
   }
 }

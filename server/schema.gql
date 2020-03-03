@@ -5,15 +5,17 @@
 
 """schedule input type"""
 input CreateInput {
-  name: String
-  time: Float
+  taskName: String!
+  plannedTime: Float!
+  date: String!
 }
 
 type Mutation {
   register(password: String!, email: String!, lastName: String!, firstName: String!): User!
   updateVisions(args: VisionInput!): Vision!
-  createSchedules(args: CreateInput!): Schedule!
-  updateSchedules(args: UpdateInput!): Schedule!
+  createSchedule(args: CreateInput!): Schedule!
+  updateSchedule(args: UpdateInput!): Schedule!
+  deleteSchedule(id: String!): Schedule!
 }
 
 type Query {
@@ -24,17 +26,18 @@ type Query {
 
 type Schedule {
   id: ID!
-  name: String!
-  time: Float!
+  taskName: String!
+  plannedTime: Float!
+  actualTime: Float!
   date: String!
+  review: String!
 }
 
 """schedule update type"""
 input UpdateInput {
   id: String!
-  name: String!
-  time: Float!
-  date: String!
+  taskName: String
+  plannedTime: Float
 }
 
 type User {
