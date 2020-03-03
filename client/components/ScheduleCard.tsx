@@ -104,6 +104,13 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
     setVisible(false)
   };
 
+  const onAdd = () => {
+    setId(null)
+    setTaskName("")
+    setPlannedTime(0)
+    setVisible(true)
+  }
+
   const onEdit = (item) => {
     setTaskName(item.taskName)
     setPlannedTime(item.plannedTime)
@@ -127,7 +134,7 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
 
   return (
     <Col span={6}>
-      <Card title={props.weekday + props.date} extra={<a onClick={()=>setVisible(true)}>{'add'}</a>} >
+      <Card title={props.weekday + props.date} extra={<a onClick={onAdd}>{'add'}</a>} >
         {// schedules无数据时返回空数组，但依然报错map of undefined。。。费解。。。
           schedules && schedules.map(item => {
             if (!item) return
@@ -143,7 +150,7 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       </Card>
       <Modal
           forceRender
-          title="Add Task"
+          title={id ? "Edit Task" : "Add Task"}
           visible={visible}
           onOk={handleOk}
           onCancel={handleCancel}

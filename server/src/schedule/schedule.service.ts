@@ -29,9 +29,10 @@ export class ScheduleService {
       id: args.id
     });
     const newSchedule = {...originalSchedule, ...args}
-    console.log(newSchedule)
-    const result = await this.ScheduleRepository.save(newSchedule);
-    return result
+    // console.log(newSchedule)
+    // create方法不知道为什么报错：duplicate key id...回退到之前调试好的版本也不行。。。
+    await this.ScheduleRepository.update(args.id, newSchedule);
+    return newSchedule
   }
 
   async delete(id: string): Promise<any> {
