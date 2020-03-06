@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Schedule } from './schedule.entity';
 import { CreateInput, UpdateInput } from './dto/schedule.dto';
 import { CheckResultAndHandleErrors } from '../../node_modules/graphql-tools';
+var moment = require('moment');
 
 @Injectable()
 export class ScheduleService {
@@ -12,9 +13,23 @@ export class ScheduleService {
     private readonly ScheduleRepository: Repository<Schedule>
   ) {}
 
-  async find(date: string): Promise<any> {
-    const schedules = await this.ScheduleRepository.find({date})
-    return schedules
+  async find(date: string ): Promise<any> {
+    // get schedules for the whole week
+    if (date === "week") {
+      const dates = []
+      for (let i = 0; i<7; i++) {
+        dates.push(moment().weekday(i).format('LL')) 
+      }
+      var schedules = []
+      await Promise.all(dates.map(async date => {
+        const schedule = await this.ScheduleRepository.find({date})
+        schedules = schedules.concat(schedule)
+      }))
+      return schedules
+    } else {
+      // get schedule for a day
+      return await this.ScheduleRepository.find({date})
+    }
   }
 
   async create(args: CreateInput): Promise<any> {

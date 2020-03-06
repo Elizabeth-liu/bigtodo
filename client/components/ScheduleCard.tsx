@@ -2,28 +2,31 @@ import React, { useState } from "react"
 import { useQuery, useMutation } from "@apollo/react-hooks"
 import { SCHEDULES_QUERY,  SCHEDULES_CREATE, SCHEDULES_UPDATE, SCHEDULES_DELETE } from "../query/schedule"
 import { Card, Col, Modal, Input, Form, InputNumber } from 'antd';
+import { Droppable, Draggable } from 'react-beautiful-dnd'
+import styled from 'styled-components'
 
 type Props = {
   weekday: string
   date: string
+  id: string,
+  updateSchedules: Function,
+  tasks: [{
+    id,
+    taskName,
+    date,
+    plannedTime,
+    actualtime
+  }]
 }
 
 
-
 const ScheduleCard: React.FunctionComponent<Props> = (props) => {
-  // console.log(props)
   const [visible, setVisible] = useState(false)
   const [taskName, setTaskName] = useState('')
   const [plannedTime, setPlannedTime] = useState(0)
   const [id, setId] = useState(null)
 
-  // hooks只能写在函数最外层，不能在判断、子函数等中，只能随着生命周期自动调用
-  const queryResult = useQuery(SCHEDULES_QUERY, {
-    // fetchPolicy: 'network-only',
-    variables: {date: props.date}
-  })
-  const schedulesResult = queryResult && queryResult.data && queryResult.data.schedules || []
-  const [schedules, setSchedules] = useState(schedulesResult)
+  const {tasks, date, updateSchedules} =  props
 
   const [createSchedule] = useMutation(SCHEDULES_CREATE, {
     refetchQueries: () => [{
@@ -31,15 +34,15 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       variables: {date: props.date}
     }],
     onCompleted: (data) => {
-      const currentSchedule = data.createSchedule || {}
-      schedules.push(currentSchedule)
-      setSchedules(schedules)
+      const newTask = data.createSchedule || {}
+      tasks.push(newTask)
+      updateSchedules({[date]: tasks})
     },
     variables: {
       args: {
         plannedTime,
         taskName,
-        date: props.date
+        date
     }}
   })
 
@@ -55,12 +58,12 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       variables: {date: props.date}
     }],
     onCompleted: (data) => {
-      const currentSchedule = data.updateSchedule || {}
-      const newSchedules = schedules.map((item) => {
-        (item.id === currentSchedule.id) && (item = currentSchedule) 
+      const currentTask = data.updateSchedule || {}
+      const newTasks = tasks.map((item) => {
+        (item.id === currentTask.id) && (item = currentTask) 
         return item
       })
-      setSchedules(newSchedules)
+      updateSchedules({[date]: newTasks})
     }
   })
 
@@ -71,12 +74,12 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       variables: {date: props.date}
     }],
     onCompleted: (data) => {
-      const newSchedules = schedules.map((item) => {
+      const newTasks = tasks.map((item) => {
         if (item.id !== data.deleteSchedule.id) {
           return item
         }
       })
-      setSchedules(newSchedules)
+      updateSchedules({[date]: newTasks})
     }
   })
 
@@ -132,21 +135,44 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
     });
   }
 
+
   return (
     <Col span={6}>
       <Card title={props.weekday + props.date} extra={<a onClick={onAdd}>{'add'}</a>} >
         {// schedules无数据时返回空数组，但依然报错map of undefined。。。费解。。。
-          schedules && schedules.map(item => {
+
+        }
+                <Droppable droppableId={date} key={date}>
+          {(provided, snapshot) => (
+            <div
+              // isDraggingOver={snapshot.isDraggingOver}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {          tasks && tasks.map((item, index) => {
             if (!item) return
-            return <div key={item.id}>
+            return <Draggable draggableId={item.id} key={item.id} index={index}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
               <span>
                 {item.taskName}{item.plannedTime}
               </span>
               <span><a onClick={() => onEdit(item)}>edit</a></span>
               <span><a onClick={() => onDelete(item)}>delete</a></span>
+      
+          </div>
+        )}
+      </Draggable>
+            return 
+          })}
+              {provided.placeholder}
             </div>
-          })
-        }
+          )}
+        </Droppable>
       </Card>
       <Modal
           forceRender

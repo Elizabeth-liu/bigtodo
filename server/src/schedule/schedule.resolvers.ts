@@ -22,22 +22,21 @@ export class ScheduleResolver {
   async schedules(
     @Args("date") date: string
   ): Promise<Schedule[]> {
-    let schedules = await this.ScheduleService.find(date)
-    return schedules;
+    return await this.ScheduleService.find(date)
   }
 
   @Mutation(() => Schedule)
   async createSchedule(
     @Args('args') args: CreateInput
   ): Promise<Schedule> {
-    return this.ScheduleService.create(args);
+    return await this.ScheduleService.create(args);
   }
 
   @Mutation(() => Schedule)
   async updateSchedule(
     @Args('args') args: UpdateInput
   ): Promise<Schedule> {
-    return this.ScheduleService.update(args);
+    return await this.ScheduleService.update(args);
   }
 
   @Mutation(() => Schedule)
