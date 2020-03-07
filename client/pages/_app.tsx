@@ -5,8 +5,8 @@ import { ApolloProvider } from "@apollo/react-hooks"
 import withApollo from "../hooks/withApollo"
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
 import 'antd/dist/antd.css'
-import './normalize.css'
-import './app.less'
+import '../styles/normalize.css'
+import '../styles/app.less'
 
 
 // since "apollo" isn't a native Next.js prop we have to declare it's type.

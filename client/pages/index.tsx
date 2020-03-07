@@ -1,13 +1,17 @@
-import React from "react"
-import { useQuery } from "@apollo/react-hooks"
-import { gql } from "apollo-boost"
+import React, { useEffect } from "react"
 import { Layout } from 'antd';
-import './index.less'
+import { useRouter } from "next/router";
+import { NextPage } from 'next'
+import Router from 'next/router'
 
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const Index = () => {
+const Index: NextPage = () => {
+
+  useEffect(() => {
+      Router.push('todo')
+  })
 
   return (
     <Layout>
@@ -21,7 +25,12 @@ const Index = () => {
   )
 }
 
-export default Index
+// Index.getInitialProps = async ({ req }) => {
+//   if (typeof window !== 'undefined') {
+//     Router.push('./todo')
+//   }
+// }
 
+ export default Index
 
 

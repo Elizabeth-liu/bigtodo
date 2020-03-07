@@ -1,14 +1,12 @@
 import React, { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
-import { gql } from "apollo-boost"
-import { Layout, Calendar, Row } from 'antd';
-import './index.less'
-import ScheduleCard from "../components/ScheduleCard";
+import { Layout, Row } from 'antd';
+import ScheduleCard from "../components/ScheduleCard/ScheduleCard";
 import moment from 'moment';
-import { Droppable, DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext } from 'react-beautiful-dnd'
 import { SCHEDULES_QUERY } from "../query/schedule";
-import './schedule.less'
-import Header from '../components/Header'
+import '../styles/schedule.less'
+import Header from '../components/Header/Header'
 
 
 const { Footer, Content } = Layout;

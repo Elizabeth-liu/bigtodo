@@ -1,16 +1,14 @@
 import React, { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { SCHEDULES_QUERY } from "../query/schedule"
-import VisionBoardItem from "../components/VisionBoardItem";
-import { Layout, Row } from "antd";
+import { Layout } from "antd";
 import moment from 'moment';
-import { PlayCircleTwoTone, PauseCircleTwoTone,  } from '@ant-design/icons';
-import './todo.less'
-import TodoItem from "../components/TodoItem";
+import '../styles/todo.less'
+import TodoItem from "../components/TodoItem/TodoItem";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Header from '../components/Header'
+import Header from '../components/Header/Header'
 
-const Todo = (props) => {
+const Todo = () => {
   const queryResult = useQuery(SCHEDULES_QUERY, {
     variables: {date: moment().format('LL')}
   })

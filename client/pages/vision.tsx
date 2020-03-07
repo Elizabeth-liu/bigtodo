@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
-import VisionBoardItem from "../components/VisionBoardItem";
+import VisionBoardItem from "../components/VisionBoardItem/VisionBoardItem";
 import { Layout, Row, Col } from "antd";
-import Header from '../components/Header'
+import Header from '../components/Header/Header'
 
 const VisionBoard = (props) => {
   // our query that defines the attributes we want to get.

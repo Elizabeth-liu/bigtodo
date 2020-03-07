@@ -1,14 +1,8 @@
 
-import Menu from './Menu'
-import {
-  MailOutlined,
-  AppstoreOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import Menu from '../Menu/Menu'
 import { Layout } from 'antd';
 
 const { Header } = Layout;
-
 
 const Index= () => {
 

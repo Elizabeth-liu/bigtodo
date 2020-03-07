@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import { useQuery, useMutation } from "@apollo/react-hooks"
-import { SCHEDULES_QUERY,  SCHEDULES_CREATE, SCHEDULES_UPDATE, SCHEDULES_DELETE } from "../query/schedule"
+import { useMutation } from "@apollo/react-hooks"
+import { SCHEDULES_QUERY,  SCHEDULES_CREATE, SCHEDULES_UPDATE, SCHEDULES_DELETE } from "../../query/schedule"
 import { Card, Col, Modal, Input, Form, InputNumber, Row } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
 import { EditTwoTone, DeleteTwoTone, PlusCircleTwoTone } from "@ant-design/icons";
 import './ScheduleCard.less'
 

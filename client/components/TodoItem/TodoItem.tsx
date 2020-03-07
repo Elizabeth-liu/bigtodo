@@ -1,8 +1,5 @@
 import React, { useState, useReducer, useEffect } from "react"
-import { useQuery } from "@apollo/react-hooks"
-import { SCHEDULES_QUERY } from "../query/schedule"
-import VisionBoardItem from "../components/VisionBoardItem";
-import { Layout, Row, Col } from "antd";
+import { Row, Col } from "antd";
 import moment from 'moment';
 import { PlayCircleTwoTone, PauseCircleTwoTone,  } from '@ant-design/icons';
 import './TodoItem.less'
@@ -58,7 +55,6 @@ const TodoItem = (props) => {
       <Col span={4}>
         {duration}
       </Col>
-
     </Row>
   )
 }
