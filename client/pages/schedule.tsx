@@ -7,37 +7,28 @@ import ScheduleCard from "../components/ScheduleCard";
 import moment from 'moment';
 import { Droppable, DragDropContext } from 'react-beautiful-dnd'
 import { SCHEDULES_QUERY } from "../query/schedule";
-import styled from 'styled-components'
+import './schedule.less'
+import Header from '../components/Header'
 
 
-const { Header, Footer, Sider, Content } = Layout;
-
-const Container = styled.div`
-  display: flex;
-  max-width: 100%;
-  overflow-x: auto;
-  box-sizing: border-box;
-`
-
-const Scrolling = styled.div`
-  padding: 12px;
-  display: flex;
-`
+const { Footer, Content } = Layout;
 
 const Index = () => {
 
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'wednesday', 'Thursday', 'Friday', 'Saturday']
 
-  // const dates = weekdays.map((item, index) => {
-  //   return moment().weekday(index).format('LL')
-  // })
+  const dates = weekdays.map((item, index) => {
+    return moment().weekday(index).format('LL')
+  })
   // console.log(dates)
 
   const queryResult = useQuery(SCHEDULES_QUERY, {
+    // 获取本周所有任务
     variables: {date: "week"}
   })
   const schedulesResult = queryResult && queryResult.data && queryResult.data.schedules || []
   const originalSchedules = {}
+  // 将后端返回的数组加工成以date为key的对象
   schedulesResult.map((schedule, index) => {
     if(!originalSchedules[schedule.date]) {
       originalSchedules[schedule.date] = []
@@ -45,19 +36,22 @@ const Index = () => {
       originalSchedules[schedule.date].push(schedule)
     }
   })
+  // 有的日期没有返回任务，补为空数组
+  dates.map((date) => {
+    !originalSchedules[date] && (originalSchedules[date] = [])
+  })
   // console.log(originalSchedules)
   const [schedules, setSchedules] = useState(originalSchedules)
   
-  const onDragStart = () => {}
-
+  // 同列调动排序
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list)
     const [removed] = result.splice(startIndex, 1)
     result.splice(endIndex, 0, removed)
-
     return result
   }
 
+  // 跨列调动排序
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
@@ -97,35 +91,29 @@ const Index = () => {
         setSchedules({...schedules, ...result})
     }
     }
-
+    
+    // 子组件更新本组件schedules
     const updateSchedules = (schedule) => {
       setSchedules({...schedules, ...schedule})
     }
 
   return (
-    <Layout>
-      <Layout>
-        <Header>Big Todo</Header>
-        <Content>
-          <Row gutter={16}>
-            <DragDropContext
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-            >
-              {/* <Container>
-                <Scrolling> */}
-                { 
-                    Object.keys(schedules).map((key, index) => {
-                    return <ScheduleCard updateSchedules={updateSchedules}tasks={schedules[key]} key={key} id={key} weekday={weekdays[index]} date={key}/>
-                  })
-                }
-                {/* </Scrolling>
-              </Container> */}
-            </DragDropContext>
-          </Row>
-        </Content>
-        <Footer>Lizzy</Footer>
-      </Layout>
+    <Layout className="schedule-layout">
+      <Header />
+      <Content className="schedule-content">
+        <Row gutter={16}>
+          <DragDropContext
+            onDragEnd={onDragEnd}
+          >
+            { 
+                Object.keys(schedules).map((key, index) => {
+                return <ScheduleCard updateSchedules={updateSchedules}tasks={schedules[key]} key={key} id={key} weekday={weekdays[index]} date={key}/>
+              })
+            }
+          </DragDropContext>
+        </Row>
+      </Content>
+      <Footer>Lizzy</Footer>
     </Layout>
   )
 }

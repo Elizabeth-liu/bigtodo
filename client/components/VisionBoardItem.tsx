@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useQuery, useMutation } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { Card, Col, Input } from 'antd';
-import './VisionBoardItem.css'
+import './VisionBoardItem.less'
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
 const { TextArea } = Input;
 
@@ -52,7 +52,7 @@ const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
 
   // console.log(props)
   return (
-    <Col span={6}>
+    <Col span={6} className="vision-board">
       <Card title={props.item} extra={<a onClick={onClick}>{isEdit ? 'confirm' : 'edit'}</a>} style={{ width: 300 }}>
         {isEdit ? 
         <TextArea value={value} onChange={onChange}/>

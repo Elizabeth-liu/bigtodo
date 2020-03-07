@@ -25,6 +25,7 @@ export class ScheduleService {
         const schedule = await this.ScheduleRepository.find({date})
         schedules = schedules.concat(schedule)
       }))
+      // console.log(dates, schedules)
       return schedules
     } else {
       // get schedule for a day

@@ -8,7 +8,7 @@ import { PlayCircleTwoTone, PauseCircleTwoTone,  } from '@ant-design/icons';
 import './todo.less'
 import TodoItem from "../components/TodoItem";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
+import Header from '../components/Header'
 
 const Todo = (props) => {
   const queryResult = useQuery(SCHEDULES_QUERY, {
@@ -17,7 +17,7 @@ const Todo = (props) => {
   const todosData = queryResult && queryResult.data && queryResult.data.schedules
   const [todos, setTodos] = useState(todosData);
 
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Footer, Content } = Layout;
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -44,8 +44,7 @@ const Todo = (props) => {
   
   return (
     <Layout>
-    <Layout>
-      <Header>Big Todo</Header>
+      <Header/>
       <Content className="todo-list">
         <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
@@ -69,7 +68,7 @@ const Todo = (props) => {
                 </Draggable>
               })
              }
-              {provided.placeholder}
+            {provided.placeholder}
             </div>
           )}
         </Droppable>
@@ -77,7 +76,6 @@ const Todo = (props) => {
       </Content>
       <Footer>Lizzy</Footer>
     </Layout>
-  </Layout>
   )
 }
 

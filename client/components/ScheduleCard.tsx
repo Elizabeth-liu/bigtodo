@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { useQuery, useMutation } from "@apollo/react-hooks"
 import { SCHEDULES_QUERY,  SCHEDULES_CREATE, SCHEDULES_UPDATE, SCHEDULES_DELETE } from "../query/schedule"
-import { Card, Col, Modal, Input, Form, InputNumber } from 'antd';
+import { Card, Col, Modal, Input, Form, InputNumber, Row } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
+import { EditTwoTone, DeleteTwoTone, PlusCircleTwoTone } from "@ant-design/icons";
+import './ScheduleCard.less'
 
 type Props = {
   weekday: string
@@ -19,14 +21,13 @@ type Props = {
   }]
 }
 
-
 const ScheduleCard: React.FunctionComponent<Props> = (props) => {
   const [visible, setVisible] = useState(false)
   const [taskName, setTaskName] = useState('')
   const [plannedTime, setPlannedTime] = useState(0)
   const [id, setId] = useState(null)
 
-  const {tasks, date, updateSchedules} =  props
+  const {tasks, date, updateSchedules, weekday} =  props
 
   const [createSchedule] = useMutation(SCHEDULES_CREATE, {
     refetchQueries: () => [{
@@ -42,7 +43,8 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       args: {
         plannedTime,
         taskName,
-        date
+        date,
+
     }}
   })
 
@@ -135,40 +137,44 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
     });
   }
 
+  const title = (
+    <Row>
+      <Col span={6}>{weekday}</Col>
+      <Col span={18}>{date}</Col>
+    </Row>
+  )
 
   return (
-    <Col span={6}>
-      <Card title={props.weekday + props.date} extra={<a onClick={onAdd}>{'add'}</a>} >
-        {// schedules无数据时返回空数组，但依然报错map of undefined。。。费解。。。
-
-        }
-                <Droppable droppableId={date} key={date}>
+    <Col xs={24} md={12} lg={8} xl={6} className="schedule-card">
+      <Card title={title} extra={<a onClick={onAdd}><PlusCircleTwoTone /></a>} >
+        <Droppable droppableId={date} key={date}>
           {(provided, snapshot) => (
             <div
-              // isDraggingOver={snapshot.isDraggingOver}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {          tasks && tasks.map((item, index) => {
-            if (!item) return
-            return <Draggable draggableId={item.id} key={item.id} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-              <span>
-                {item.taskName}{item.plannedTime}
-              </span>
-              <span><a onClick={() => onEdit(item)}>edit</a></span>
-              <span><a onClick={() => onDelete(item)}>delete</a></span>
-      
-          </div>
-        )}
-      </Draggable>
-            return 
-          })}
+              { tasks && tasks.map((item, index) => {
+                if (!item) return
+                return <Draggable draggableId={item.id} key={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      className="task-item"
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <Col span={14}>
+                        {item.taskName}
+                      </Col>
+                      <Col span={4}>
+                        {item.plannedTime} h
+                      </Col>
+                      <Col span={3}><a onClick={() => onEdit(item)}><EditTwoTone /></a></Col>
+                      <Col span={3}><a onClick={() => onDelete(item)}><DeleteTwoTone /></a></Col>
+                    </div>
+                  )}
+                </Draggable>
+              })}
               {provided.placeholder}
             </div>
           )}
@@ -181,11 +187,17 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-          <div>
-            <span>Taskname</span><Input value={taskName} onChange={(e) => setTaskName(e.target.value)}/>
-            <span>plannedTime</span><InputNumber min={0} value={plannedTime} onChange={(value) => setPlannedTime(value)}/>
-            <span>h</span>
-          </div>
+          <Row>
+            <Col span={6}>Taskname</Col>
+            <Col span={16}>
+              <Input value={taskName} onChange={(e) => setTaskName(e.target.value)}/>
+            </Col>
+            <Col span={6}>plannedTime</Col>
+            <Col span={5}> 
+              <InputNumber min={0} value={plannedTime} onChange={(value) => setPlannedTime(value)}/>
+            </Col>
+            <Col>h</Col>
+          </Row>
         </Modal>
     </Col>
   )

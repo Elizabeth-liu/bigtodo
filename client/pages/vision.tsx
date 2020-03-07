@@ -2,7 +2,8 @@ import React, { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import VisionBoardItem from "../components/VisionBoardItem";
-import { Layout, Row } from "antd";
+import { Layout, Row, Col } from "antd";
+import Header from '../components/Header'
 
 const VisionBoard = (props) => {
   // our query that defines the attributes we want to get.
@@ -21,19 +22,21 @@ const VisionBoard = (props) => {
 
   const [visions, setIsVisions] = useState(visionsData);
   
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Footer, Content } = Layout;
   
   return (
     <Layout>
     <Layout>
-      <Header>Big Todo</Header>
+      <Header/>
       <Content>
       <Row justify="center">
       {
         Object.keys(visions).map(item => {
           // 无法写成visionItem={key, value:visions[key]}形式。。
           // console.log(item, visions[item])
-          return <VisionBoardItem key={item} item={item} value={visions[item]} setIsVisions={setIsVisions}/>
+          return (
+            <VisionBoardItem key={item} item={item} value={visions[item]} setIsVisions={setIsVisions}/>
+          )
         }) 
       }
       </Row>
