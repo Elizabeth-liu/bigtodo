@@ -15,3 +15,5 @@ development.env
 .history/
 logs/
 .env
+mysql.js
+bigtodo.sql

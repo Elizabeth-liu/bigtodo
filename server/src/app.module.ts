@@ -22,7 +22,7 @@ import { AppService } from './app.service';
       host: 'localhost',
       port: 3308,
       username: 'root',
-      password: '123456',
+      password: '12345678',
       database: 'bigtodo',
       synchronize: true,
       logging: true,
