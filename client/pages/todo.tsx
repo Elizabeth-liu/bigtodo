@@ -16,7 +16,7 @@ const Todo = () => {
   const [todos, setTodos] = useState(todosData);
 
   const { Footer, Content } = Layout;
-
+  
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -51,7 +51,7 @@ const Todo = () => {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {todos && todos.map((todo, index) => {// schedules无数据时返回空数组，但依然报错map of undefined。。。费解。。
+              {todos && todos.map((todo, index) => {
                 if (!todo) return
                 return <Draggable key={todo.id} draggableId={todo.id} index={index}>
                   {(provided, snapshot) => (

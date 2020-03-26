@@ -1,7 +1,7 @@
 import { Vision } from '../vision.entity';
 import { Field, InputType } from "type-graphql";
 
-@InputType({ description: "New recipe data" })
+@InputType({ description: "vision input type" })
 export class VisionInput implements Partial<Vision> {
   @Field({ nullable: true })
   annualVision?: string;

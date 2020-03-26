@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schedule } from './schedule.entity';
 import { CreateInput, UpdateInput } from './dto/schedule.dto';
-import { CheckResultAndHandleErrors } from '../../node_modules/graphql-tools';
 var moment = require('moment');
 
 @Injectable()
@@ -25,10 +24,9 @@ export class ScheduleService {
         const schedule = await this.ScheduleRepository.find({date})
         schedules = schedules.concat(schedule)
       }))
-      // console.log(dates, schedules)
       return schedules
     } else {
-      // get schedule for a day
+      // get the schedule for a day
       return await this.ScheduleRepository.find({date})
     }
   }
@@ -45,8 +43,6 @@ export class ScheduleService {
       id: args.id
     });
     const newSchedule = {...originalSchedule, ...args}
-    // console.log(newSchedule)
-    // create方法不知道为什么报错：duplicate key id...回退到之前调试好的版本也不行。。。
     await this.ScheduleRepository.update(args.id, newSchedule);
     return newSchedule
   }

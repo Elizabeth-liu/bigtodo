@@ -25,12 +25,6 @@ const Index: NextPage = () => {
   )
 }
 
-// Index.getInitialProps = async ({ req }) => {
-//   if (typeof window !== 'undefined') {
-//     Router.push('./todo')
-//   }
-// }
-
  export default Index
 
 

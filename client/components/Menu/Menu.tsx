@@ -4,18 +4,9 @@ import Link from 'next/link'
 import './Menu.less'
 import { useRouter } from 'next/router'
 
-// const storage = window.localStorage;
-
 const Index = () => {
-  // if (typeof window !== 'undefined') {
-  //   var currentKey = localStorage.getItem('selectedKey')
-  // } else {
-  //   var currentKey = 'todo'
-  // }
-  // const [current, setCurrent] = useState(currentKey)
+  
   const router = useRouter()
-  // console.log(router)
-
 
     return (
       <Menu className="menu" selectedKeys={[router.route]} mode="horizontal">

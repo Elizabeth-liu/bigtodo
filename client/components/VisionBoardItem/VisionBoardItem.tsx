@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import { useQuery, useMutation } from "@apollo/react-hooks"
+import { useMutation } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import { Card, Col, Input } from 'antd';
 import './VisionBoardItem.less'
-import { ApolloClient, NormalizedCacheObject } from "apollo-boost"
 const { TextArea } = Input;
 
 type Props = {
@@ -26,7 +25,6 @@ const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(props.value);
-  // console.log((useMutation(VISIONS_MUTATION)[0]))
   const [ updateVisions ] = useMutation(VISIONS_MUTATION, {
     variables: { args: {[props.item]: value} }
   })
@@ -37,9 +35,6 @@ const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
 
   const onClick = () => {
     if (isEdit) {
-      // ...用[]而不是{}...
-      
-      // console.log(useMutation(VISIONS_MUTATION))
       updateVisions().then((data:any) => {
         props.setIsVisions(data.data.updateVisions)
       })
@@ -56,7 +51,6 @@ const VisionBoardItem: React.FunctionComponent<Props> = (props) => {
       <Card title={props.item} extra={<a onClick={onClick}>{isEdit ? 'confirm' : 'edit'}</a>} style={{ width: 300 }}>
         {isEdit ? 
         <TextArea value={value} onChange={onChange}/>
-        // <Input value={value} onChange={onChange}/>
           : <p>{props.value}</p>}
       </Card>
     </Col>

@@ -10,7 +10,7 @@ const TodoItem = (props) => {
 
   const todo = props.todo
 
-  // console.log(todo)
+  // transform seconds to '00:00:00' format
   const formatTime = () => {
     const duration = moment.duration(actualTime, 'seconds');
     const handleTime = (time) => {
@@ -36,6 +36,7 @@ const TodoItem = (props) => {
 
   useEffect(() => {
     if (!paused) {
+      // start timer
       const timer = setInterval(() => {
         setActualTime(actualTime + 1)
         setDuration(formatTime())
@@ -44,10 +45,10 @@ const TodoItem = (props) => {
         clearInterval(timer)
       }
     } else {
+      // pause timer and update the actualTime to database
       updateSchedule()
     }
   }, [paused, actualTime])
-
 
   const toggleTodo = () => {
     setPaused(!paused)

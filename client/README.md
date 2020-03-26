@@ -1,15 +1,13 @@
-# next-graphql-styled-components-ts-boilerplate
-This is a boilerplate for these technologies:
+# bigtodo-client
+This is a pomotodo app using these technologies:
 - TypeScript
 - Next.js
-- Styled Components
 - GraphQL
 - SSR
+- React Hooks
 
 ### Setup dev environment
 1. Check this repo out.
 2. `yarn install`
 3. `yarn dev`
 4. open http://localhost:3000/
-
-Happy coding :)

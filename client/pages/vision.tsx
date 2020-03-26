@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useQuery } from "@apollo/react-hooks"
 import { gql } from "apollo-boost"
 import VisionBoardItem from "../components/VisionBoardItem/VisionBoardItem";
-import { Layout, Row, Col } from "antd";
+import { Layout, Row } from "antd";
 import Header from '../components/Header/Header'
 
 const VisionBoard = (props) => {
@@ -32,8 +32,6 @@ const VisionBoard = (props) => {
       <Row justify="center">
       {
         Object.keys(visions).map(item => {
-          // 无法写成visionItem={key, value:visions[key]}形式。。
-          // console.log(item, visions[item])
           return (
             <VisionBoardItem key={item} item={item} value={visions[item]} setIsVisions={setIsVisions}/>
           )

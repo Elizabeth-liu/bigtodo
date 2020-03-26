@@ -13,12 +13,10 @@ export class VisionService {
 
   async update(args: VisionInput): Promise<any> {
     const originalVision = await this.VisionRepository.findOne({
+      // there is only one vision data currently
       id: "1"
     });
-    // console.log('originalVision', originalVision)
-    // console.log('args', args)
     const newVision = {...originalVision, ...args}
-    // console.log('new', newVision)
     const revision = await this.VisionRepository.save(newVision);
     return revision
   }

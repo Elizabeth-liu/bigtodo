@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useMutation } from "@apollo/react-hooks"
 import { SCHEDULES_QUERY,  SCHEDULES_CREATE, SCHEDULES_UPDATE, SCHEDULES_DELETE } from "../../query/schedule"
-import { Card, Col, Modal, Input, Form, InputNumber, Row } from 'antd';
+import { Card, Col, Modal, Input, InputNumber, Row } from 'antd';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { EditTwoTone, DeleteTwoTone, PlusCircleTwoTone } from "@ant-design/icons";
 import './ScheduleCard.less'
@@ -27,7 +27,6 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
   const [id, setId] = useState(null)
 
   const {tasks, date, updateSchedules, weekday} =  props
-  // console.log(props)
 
   const [createSchedule] = useMutation(SCHEDULES_CREATE, {
     refetchQueries: () => [{
@@ -55,10 +54,12 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
         taskName,
         id
     }},
+    // update apollo cache
     refetchQueries: () => [{
       query: SCHEDULES_QUERY,
       variables: {date: props.date}
     }],
+    // update ui
     onCompleted: (data) => {
       const currentTask = data.updateSchedule || {}
       const newTasks = tasks.map((item) => {
@@ -84,10 +85,6 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
       updateSchedules({[date]: newTasks})
     }
   })
-
-  const onClick = () => {
-
-  }
 
   const handleOk = () => {
     if (id) {

@@ -18,31 +18,28 @@ const Index = () => {
   const dates = weekdays.map((item, index) => {
     return moment().weekday(index).format('LL')
   })
-  // console.log(dates)
 
   const queryResult = useQuery(SCHEDULES_QUERY, {
-    // 获取本周所有任务
+    // get the week's tasks
     variables: {date: "week"}
   })
-  // console.log(queryResult)
   const schedulesResult = queryResult && queryResult.data && queryResult.data.schedules || []
   const originalSchedules = {}
-  // 将后端返回的数组加工成以date为key的对象
+  // transform array to object with 'date' as the key
   schedulesResult.map((schedule, index) => {
-    // 初始化为[]
+    // initialize the value to []
     if(!originalSchedules[schedule.date]) {
       originalSchedules[schedule.date] = []
     }
     originalSchedules[schedule.date].push(schedule)
   })
-  // 有的日期没有返回任务，补为空数组
+  // initialize the value of days without tasks to []
   dates.map((date) => {
     !originalSchedules[date] && (originalSchedules[date] = [])
   })
-  // console.log(originalSchedules)
   const [schedules, setSchedules] = useState(originalSchedules)
   
-  // 同列调动排序
+  // reorder after drag and drop within a colum
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list)
     const [removed] = result.splice(startIndex, 1)
@@ -50,14 +47,12 @@ const Index = () => {
     return result
   }
 
-  // 跨列调动排序
+  // reorder after drag and drop between colums
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source);
     const destClone = Array.from(destination);
     const [removed] = sourceClone.splice(droppableSource.index, 1);
-
     destClone.splice(droppableDestination.index, 0, removed);
-
     const result = {};
     result[droppableSource.droppableId] = sourceClone;
     result[droppableDestination.droppableId] = destClone;
@@ -91,7 +86,7 @@ const Index = () => {
     }
     }
     
-    // 子组件更新本组件schedules
+    // update schedules from the child component
     const updateSchedules = (schedule) => {
       setSchedules({...schedules, ...schedule})
     }
@@ -106,7 +101,6 @@ const Index = () => {
           >
             { 
                 Object.keys(schedules).map((key, index) => {
-                  // console.log(schedules, key)
                 return <ScheduleCard updateSchedules={updateSchedules}tasks={schedules[key]} key={key} id={key} weekday={weekdays[index]} date={key}/>
               })
             }

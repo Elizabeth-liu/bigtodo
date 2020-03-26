@@ -4,10 +4,6 @@ import {
   Mutation,
   Args,
 } from "@nestjs/graphql";
-import {
-  FieldResolver,
-  Root
-} from "type-graphql";
 
 import { Schedule } from "./schedule.entity";
 import { ScheduleService } from "./schedule.service";
