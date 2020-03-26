@@ -38,6 +38,7 @@ input UpdateInput {
   id: String!
   taskName: String
   plannedTime: Float
+  actualTime: Float
 }
 
 type User {

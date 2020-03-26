@@ -27,6 +27,7 @@ const ScheduleCard: React.FunctionComponent<Props> = (props) => {
   const [id, setId] = useState(null)
 
   const {tasks, date, updateSchedules, weekday} =  props
+  // console.log(props)
 
   const [createSchedule] = useMutation(SCHEDULES_CREATE, {
     refetchQueries: () => [{

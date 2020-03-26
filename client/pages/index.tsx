@@ -10,7 +10,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const Index: NextPage = () => {
 
   useEffect(() => {
-      Router.push('todo')
+      Router.push('/todo')
   })
 
   return (

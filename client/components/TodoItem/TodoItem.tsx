@@ -1,17 +1,16 @@
 import React, { useState, useReducer, useEffect } from "react"
+import { useMutation } from "@apollo/react-hooks"
 import { Row, Col } from "antd";
 import moment from 'moment';
 import { PlayCircleTwoTone, PauseCircleTwoTone,  } from '@ant-design/icons';
 import './TodoItem.less'
+import { SCHEDULES_UPDATE } from "../../query/schedule";
 
 const TodoItem = (props) => {
 
   const todo = props.todo
 
-  const [paused, setPaused] = useState(true)
-  const [actualTime, setActualTime] = useState(0)
-  const [duration, setDuration] = useState('00:00:00')
-
+  // console.log(todo)
   const formatTime = () => {
     const duration = moment.duration(actualTime, 'seconds');
     const handleTime = (time) => {
@@ -23,6 +22,18 @@ const TodoItem = (props) => {
     return getTime(duration)
   }
 
+  const [paused, setPaused] = useState(true)
+  const [actualTime, setActualTime] = useState(todo.actualTime)
+  const [duration, setDuration] = useState(formatTime())
+
+  const [updateSchedule] = useMutation(SCHEDULES_UPDATE, {
+    variables: {
+      args: {
+        actualTime,
+        id: todo.id
+    }}
+  })
+
   useEffect(() => {
     if (!paused) {
       const timer = setInterval(() => {
@@ -32,6 +43,8 @@ const TodoItem = (props) => {
       return () => {
         clearInterval(timer)
       }
+    } else {
+      updateSchedule()
     }
   }, [paused, actualTime])
 

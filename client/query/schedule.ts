@@ -6,6 +6,7 @@ const SCHEDULES_QUERY = gql`
       id 
       taskName
       plannedTime,
+      actualTime
       date
     }
   }
@@ -16,7 +17,8 @@ const SCHEDULES_CREATE = gql`
       id,
       taskName, 
       date,
-      plannedTime
+      plannedTime,
+      actualTime
     }
   }
   `
@@ -27,7 +29,8 @@ const SCHEDULES_UPDATE = gql`
       id,
       taskName, 
       date,
-      plannedTime
+      plannedTime,
+      actualTime
     }
   }
   `

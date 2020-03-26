@@ -19,4 +19,6 @@ export class UpdateInput implements Partial<Schedule> {
   taskName: string;
   @Field({ nullable: true })
   plannedTime: number;
+  @Field({ nullable: true })
+  actualTime: number;
 }

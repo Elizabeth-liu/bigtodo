@@ -24,15 +24,16 @@ const Index = () => {
     // 获取本周所有任务
     variables: {date: "week"}
   })
+  // console.log(queryResult)
   const schedulesResult = queryResult && queryResult.data && queryResult.data.schedules || []
   const originalSchedules = {}
   // 将后端返回的数组加工成以date为key的对象
   schedulesResult.map((schedule, index) => {
+    // 初始化为[]
     if(!originalSchedules[schedule.date]) {
       originalSchedules[schedule.date] = []
-    } else {
-      originalSchedules[schedule.date].push(schedule)
     }
+    originalSchedules[schedule.date].push(schedule)
   })
   // 有的日期没有返回任务，补为空数组
   dates.map((date) => {
@@ -105,6 +106,7 @@ const Index = () => {
           >
             { 
                 Object.keys(schedules).map((key, index) => {
+                  // console.log(schedules, key)
                 return <ScheduleCard updateSchedules={updateSchedules}tasks={schedules[key]} key={key} id={key} weekday={weekdays[index]} date={key}/>
               })
             }
